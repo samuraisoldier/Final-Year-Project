@@ -5,6 +5,7 @@ import pandapower.plotting as plot
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandapower.plotting.plotly import simple_plotly
+from pandapower.estimation import estimate
 
 
 #read overall net from excel file
@@ -16,19 +17,19 @@ simple_plotly(net,respect_switches=True )
 
 
 ####REDUCED NET###########
-red_net = pp.from_excel("final code/circuits/red_net2.xlsx")
+#red_net = pp.from_excel("final code/circuits/red_net2.xlsx")
 #red_net
 #make some network plots
 #plot.simple_plot(red_net, show_plot=True, trafo_size = 1.5)
-simple_plotly(red_net)
+#simple_plotly(red_net)
 #pp.to_excel(red_net, 'red_net2.xlsx', include_empty_tables = False)
 
 ####INDUSTRIAL FEEDER###########
 ind_feeder = pp.from_excel("final code/circuits/ind_feeder.xlsx")
-ind_feeder
+#ind_feeder
 #make some network plots
-#plot.simple_plot(ind_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
-simple_plotly(ind_feeder)
+plot.simple_plot(ind_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
+#simple_plotly(ind_feeder)
 
 
 ####RESIDENTIAL FEEDER###########
