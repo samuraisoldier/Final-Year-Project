@@ -32,7 +32,7 @@ pp.create_measurement(net, "q", "line", 0.568, .008, element=l1, side=b1)    # Q
 pp.create_measurement(net, "q", "line", 0.663, .008, element=l2, side=b1)    # Qline (bus 1 -> bus 3) at bus 1
 net.measurement
 
-
+net.measurement.to_excel('meas.xlsx')
 success = estimate(net, init='flat')
 print(success)
 
@@ -46,7 +46,7 @@ pf_res_plotly(net)
 net
 net.bus
 
-net.res_bus = net.res_bus_est
+net.res_line_est
 net.res_bus
 net.res_bus_est.set_index(pd.Index([1,2,3]))
 

@@ -16,13 +16,6 @@ plot.simple_plot(net, show_plot=True, trafo_size = 1.25, plot_loads = True, plot
 simple_plotly(net,respect_switches=True )
 
 
-####REDUCED NET###########
-#red_net = pp.from_excel("final code/circuits/red_net2.xlsx")
-#red_net
-#make some network plots
-#plot.simple_plot(red_net, show_plot=True, trafo_size = 1.5)
-#simple_plotly(red_net)
-#pp.to_excel(red_net, 'red_net2.xlsx', include_empty_tables = False)
 
 ####INDUSTRIAL FEEDER###########
 ind_feeder = pp.from_excel("final code/circuits/ind_feeder.xlsx")
@@ -81,6 +74,7 @@ mixed_feeder.measurement = pd.read_excel('final code/measurements/mixed_feeder_m
 #####INDUSTRIAL ESTIMATOR#########
 successi = estimate(ind_feeder, init='flat')
 print(successi)
+ind_feeder.measurement
 ind_feeder.res_line_est
 ind_feeder.res_bus_est
 
@@ -108,26 +102,65 @@ print(successrc)
 mixed_feeder.res_line_est
 mixed_feeder.res_bus_est
 
-
+res_feeder.res_bus_est
 
 #################################################SET UP MEASUREMENTS FOR OVERALL FEEDER########################
 
+##############################BUS MEASUREMENTS#####################################
+
+##RESIDENTIAL
+i = 0
+while i < len(res_feeder.res_bus_est):
+    pp.create_measurement(net, 'v', 'bus', res_feeder.res_bus_est.vm_pu[i] , 0.0004, element = i+3)
+    pp.create_measurement(net, 'p', 'bus', res_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+3)
+    i = i+ 1
+
+##INDUSTRIAL
+i = 0
+while i < len(ind_feeder.res_bus_est):
+    pp.create_measurement(net, 'v', 'bus', ind_feeder.res_bus_est.vm_pu[i] , 0.0004, element = i+22)
+    pp.create_measurement(net, 'p', 'bus', ind_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+22)
+    i = i+ 1
+
+##COMMERCIAL
+i = 0
+while i < len(comm_feeder.res_bus_est):
+    pp.create_measurement(net, 'v', 'bus', comm_feeder.res_bus_est.vm_pu[i] , 0.0004, element = i+26)
+    pp.create_measurement(net, 'p', 'bus', comm_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+26)
+    i = i+ 1
+
+##MIXED
+i = 0
+while i < len(mixed_feeder.res_bus_est):
+    pp.create_measurement(net, 'v', 'bus', mixed_feeder.res_bus_est.vm_pu[i] , 0.0004, element = i+47)
+    pp.create_measurement(net, 'p', 'bus', mixed_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+47)
+    i = i+ 1
 
 
+pp.create_measurement(net, 'v', 'bus', 1 , 0.0004, element = 0)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 1)
+pp.create_measurement(net, 'v', 'bus', np.random.normal(1, 0.0004), .0004,  element = 1)
+#pp.create_measurement(net, 'v', 'bus', 1, .0004,  element = 2)
+#pp.create_measurement(net, 'v', 'bus', 1, .0004,  element = 21)
+#pp.create_measurement(net, 'v', 'bus', 1, .0004,  element = 46)
+
+#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 25)
+#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 46)
+#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 21)
+#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 2)
 
 
+net.measurement
 
-
-
+#net.measurement.to_excel('final code/measurements/allmeas1.xlsx')
 ########################################################OVERALL ESTIMATOR########################################
 
+succes = estimate(net, init='flat')
+print(succes)
 
+net.res_line_est
 
-
-
-
-
-
+net.res_bus_est
 ########################################################CHECK CONSTRAINTS#######################################
 ###############################OVERALL NET
 
@@ -152,3 +185,62 @@ mixed_feeder.res_bus_est
 #DISPLAY OPTIONS AND CALCULATE CHEAPEST
 #CHOOSE AND ALLEVIATE
 #RECALCULATE STATE TO CONFIRM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##############################LINE MEASUREMENTS#####################################
+
+##RESIDENTIAL
+datares = pd.DataFrame({'name':[None]*len(res_feeder.res_line_est.i_ka),
+                        'measurement_type':['i']*len(res_feeder.res_line_est.i_ka),
+                        'element_type':['line']*len(res_feeder.res_line_est.i_ka),
+                        'element':list(range(1,18)),
+                        'value':list(res_feeder.res_line_est.i_ka.values*1000),
+                        'std_dev':[0.001]*len(res_feeder.res_line_est.i_ka),
+                        'side':list(net.line.from_bus.loc[1:17].values)})
+
+
+
+##COMMERCIAL
+datacomm = pd.DataFrame({'name':[None]*len(comm_feeder.res_line_est.i_ka),
+                        'measurement_type':['i']*len(comm_feeder.res_line_est.i_ka),
+                        'element_type':['line']*len(comm_feeder.res_line_est.i_ka),
+                        'element':list(range(23,42)),
+                        'value':list(comm_feeder.res_line_est.i_ka.values*1000),
+                        'std_dev':[0.001]*len(comm_feeder.res_line_est.i_ka),
+                        'side':list(net.line.from_bus.loc[23:41].values)})
+
+
+##INDUSTRIAL
+dataind = pd.DataFrame({'name':[None]*len(ind_feeder.res_line_est.i_ka),
+                        'measurement_type':['i']*len(ind_feeder.res_line_est.i_ka),
+                        'element_type':['line']*len(ind_feeder.res_line_est.i_ka),
+                        'element':list(range(19,22)),
+                        'value':list(ind_feeder.res_line_est.i_ka.values*1000),
+                        'std_dev':[0.001]*len(ind_feeder.res_line_est.i_ka),
+                        'side':list(net.line.from_bus.loc[19:21].values)})
+
+
+##MIXED
+datamixed = pd.DataFrame({'name':[None]*len(mixed_feeder.res_line_est.i_ka),
+                        'measurement_type':['i']*len(mixed_feeder.res_line_est.i_ka),
+                        'element_type':['line']*len(mixed_feeder.res_line_est.i_ka),
+                        'element':list(range(42,61)),
+                        'value':list(mixed_feeder.res_line_est.i_ka.values*1000),
+                        'std_dev':[0.001]*len(mixed_feeder.res_line_est.i_ka),
+                        'side':list(net.line.from_bus.loc[42:60].values)})
