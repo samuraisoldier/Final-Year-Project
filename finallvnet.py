@@ -29,7 +29,7 @@ ind_feeder = pp.from_excel("final code/circuits/ind_feeder.xlsx")
 res_feeder = pp.from_excel("final code/circuits/res_feeder.xlsx")
 #res_feeder
 #make some network plots
-#plot.simple_plot(res_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
+plot.simple_plot(res_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
 simple_plotly(res_feeder)
 
 
@@ -45,7 +45,7 @@ comm_feeder = pp.from_excel("final code/circuits/comm_feeder.xlsx")
 mixed_feeder = pp.from_excel("final code/circuits/mixed_feeder.xlsx")
 #mixed_feeder
 #make some network plots
-#plot.simple_plot(mixed_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
+plot.simple_plot(mixed_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
 simple_plotly(mixed_feeder)
 
 
@@ -157,11 +157,11 @@ pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 3)
 
 succes = estimate(net, init='flat')
 print(succes)
-#net.res_line_est
+net.res_line_est
 net.res_bus_est.to_excel('final code/result/bus_init.xlsx')
 net.res_line_est.to_excel('final code/result/line_init.xlsx')
 
-
+n
 ########################################################CHECK CONSTRAINTS#######################################
 ###############################OVERALL NET
 
