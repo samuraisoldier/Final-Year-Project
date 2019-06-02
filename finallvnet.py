@@ -29,8 +29,8 @@ ind_feeder = pp.from_excel("final code/circuits/ind_feeder.xlsx")
 res_feeder = pp.from_excel("final code/circuits/res_feeder.xlsx")
 #res_feeder
 #make some network plots
-plot.simple_plot(res_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
-simple_plotly(res_feeder)
+#plot.simple_plot(res_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
+#simple_plotly(res_feeder)
 
 
 ####COMMERCIAL FEEDER###########
@@ -47,10 +47,6 @@ mixed_feeder = pp.from_excel("final code/circuits/mixed_feeder.xlsx")
 #make some network plots
 plot.simple_plot(mixed_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
 simple_plotly(mixed_feeder)
-
-
-
-
 
 
 #########################################################MEASUREMENTS#########################################
@@ -142,7 +138,19 @@ pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 1)
 pp.create_measurement(net, 'v', 'bus', np.random.normal(1, 0.0004), .0004,  element = 1)
 #pp.create_measurement(net, 'v', 'bus', 1, .0004,  element = 2)
 #pp.create_measurement(net, 'v', 'bus', 1, .0004,  element = 21)
-#pp.create_measurement(net, 'v', 'bus', 1, .0004,  element = 46)
+pp.create_measurement(net, 'v', 'bus', 1.0006, .0004,  element = 46)
+pp.create_measurement(net, 'v', 'bus', 1.0007, .0004,  element = 48)
+pp.create_measurement(net, 'v', 'bus', 1.0004, .0004,  element = 49)
+pp.create_measurement(net, 'v', 'bus', 1.0005, .0004,  element = 50)
+pp.create_measurement(net, 'v', 'bus', 1.0002, .0004,  element = 51)
+pp.create_measurement(net, 'v', 'bus', 1.00015, .0004,  element = 52)
+pp.create_measurement(net, 'v', 'bus', 1.00003, .0004,  element = 53)
+pp.create_measurement(net, 'v', 'bus', 1.000056, .0004,  element = 54)
+pp.create_measurement(net, 'v', 'bus', 1.000075, .0004,  element = 55)
+pp.create_measurement(net, 'v', 'bus', 1.00009, .0004,  element = 56)
+pp.create_measurement(net, 'v', 'bus', 1.00001, .0004,  element = 57)
+pp.create_measurement(net, 'v', 'bus', 1.000027, .0004,  element = 58)
+pp.create_measurement(net, 'v', 'bus', 1.00032, .0004,  element = 59)
 
 pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 26)
 pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 47)
