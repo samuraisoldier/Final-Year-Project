@@ -29,7 +29,7 @@ res_feeder = pp.from_excel("final code/circuits/res_feeder.xlsx")
 #res_feeder
 #make some network plots
 #plot.simple_plot(res_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
-#simple_plotly(res_feeder)
+simple_plotly(res_feeder)
 
 
 ####COMMERCIAL FEEDER###########
@@ -37,7 +37,7 @@ comm_feeder = pp.from_excel("final code/circuits/comm_feeder.xlsx")
 #comm_feeder
 #make some network plots
 #plot.simple_plot(comm_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
-#simple_plotly(comm_feeder)
+simple_plotly(comm_feeder)
 
 
 ####MIXED FEEDER###########
@@ -153,7 +153,7 @@ pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 3)
 
 #net.measurement
 
-#net.measurement.to_excel('final code/measurements/allmeas1.xlsx')
+#net.measurement.to_excel('final code/measurements/allmeasev.xlsx')
 ########################################################OVERALL ESTIMATOR########################################
 
 succes = estimate(net, init='flat')
@@ -171,5 +171,28 @@ net.res_line_est.loading_percent>75
 
 #####WHAT ARE THE OPTIONS FOR EACH FEEDER########
 #DISPLAY OPTIONS AND CALCULATE CHEAPEST
+
 #CHOOSE AND ALLEVIATE
+#INDUSTRIAL
+#pp.create_measurement(net, 'p', 'bus', 2, .001,  element = 24)
+pp.create_measurement(net, 'p', 'bus', 5, .001,  element = 23)
+#COMMERCIAL
+#pp.create_measurement(net, 'p', 'bus', 1.2, .001,  element = 33)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 35)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 45)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 46)
+#RESIDENTIAL
+#pp.create_measurement(net, 'p', 'bus', 0.5, .001,  element = 12)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 10)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 19)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 18)
+#MIXED
+#pp.create_measurement(net, 'p', 'bus', 0.1, .001,  element = 63)
+pp.create_measurement(net, 'p', 'bus', 2, .001,  element = 24)
+
 #RECALCULATE STATE TO CONFIRM
+successfinal = estimate(net, init='flat')
+print(successfinal)
+net.res_line_est
+net.res_bus_est.to_excel('final code/result/bus_final.xlsx')
+net.res_line_est.to_excel('final code/result/line_final.xlsx')
