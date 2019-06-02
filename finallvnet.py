@@ -9,7 +9,7 @@ from pandapower.estimation import estimate
 
 
 #read overall net from excel file
-net = pp.from_excel("final code/circuits/net2.xlsx")
+net = pp.from_excel("final code/circuits/net3.xlsx")
 #net
 #make some network plots
 plot.simple_plot(net, show_plot=True, trafo_size = 1.25, plot_loads = True, plot_sgens = True)
@@ -21,7 +21,7 @@ simple_plotly(net,respect_switches=True )
 ind_feeder = pp.from_excel("final code/circuits/ind_feeder.xlsx")
 #ind_feeder
 #make some network plots
-plot.simple_plot(ind_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
+#plot.simple_plot(ind_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
 #simple_plotly(ind_feeder)
 
 
@@ -29,7 +29,7 @@ plot.simple_plot(ind_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True
 res_feeder = pp.from_excel("final code/circuits/res_feeder.xlsx")
 #res_feeder
 #make some network plots
-plot.simple_plot(res_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
+#plot.simple_plot(res_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
 simple_plotly(res_feeder)
 
 
@@ -37,15 +37,15 @@ simple_plotly(res_feeder)
 comm_feeder = pp.from_excel("final code/circuits/comm_feeder.xlsx")
 #comm_feeder
 #make some network plots
-plot.simple_plot(comm_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
-simple_plotly(comm_feeder)
+#plot.simple_plot(comm_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
+#simple_plotly(comm_feeder)
 
 
 ####MIXED FEEDER###########
 mixed_feeder = pp.from_excel("final code/circuits/mixed_feeder.xlsx")
 #mixed_feeder
 #make some network plots
-plot.simple_plot(mixed_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
+#plot.simple_plot(mixed_feeder, show_plot=True, trafo_size = 1.5, plot_loads = True, plot_sgens = True)
 simple_plotly(mixed_feeder)
 
 
@@ -74,35 +74,35 @@ mixed_feeder.measurement = pd.read_excel('final code/measurements/mixed_feeder_m
 #####INDUSTRIAL ESTIMATOR#########
 successi = estimate(ind_feeder, init='flat')
 print(successi)
-ind_feeder.measurement
-ind_feeder.res_line_est
-ind_feeder.res_bus_est
+#ind_feeder.measurement
+#ind_feeder.res_line_est
+#ind_feeder.res_bus_est
 
 
 
 #####RESIDENTIAL ESTIMATOR########
-successr = estimate(res_feeder, init='flat')
-print(successr)
-res_feeder.res_line_est
-res_feeder.res_bus_est
+success = estimate(res_feeder, init='flat')
+print(success)
+#res_feeder.res_line_est
+#res_feeder.res_bus_est
 
 
 
 #####COMMERCIAL ESTIMATOR#########
 successc = estimate(comm_feeder, init='flat')
 print(successc)
-comm_feeder.res_line_est
-comm_feeder.res_bus_est
+#comm_feeder.res_line_est
+#comm_feeder.res_bus_est
 
 
 
 #####MIXED ESTIMATOR##############
 successrc = estimate(mixed_feeder, init='flat')
 print(successrc)
-mixed_feeder.res_line_est
-mixed_feeder.res_bus_est
+#mixed_feeder.res_line_est
+#mixed_feeder.res_bus_est
 
-res_feeder.res_bus_est
+
 
 #################################################SET UP MEASUREMENTS FOR OVERALL FEEDER########################
 
@@ -144,23 +144,24 @@ pp.create_measurement(net, 'v', 'bus', np.random.normal(1, 0.0004), .0004,  elem
 #pp.create_measurement(net, 'v', 'bus', 1, .0004,  element = 21)
 #pp.create_measurement(net, 'v', 'bus', 1, .0004,  element = 46)
 
-#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 25)
-#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 46)
-#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 21)
-#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 2)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 26)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 47)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 22)
+pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 3)
 
 
-net.measurement
+#net.measurement
 
 #net.measurement.to_excel('final code/measurements/allmeas1.xlsx')
 ########################################################OVERALL ESTIMATOR########################################
 
 succes = estimate(net, init='flat')
 print(succes)
+#net.res_line_est
+net.res_bus_est.to_excel('final code/result/bus_init.xlsx')
+net.res_line_est.to_excel('final code/result/line_init.xlsx')
 
-net.res_line_est
 
-net.res_bus_est
 ########################################################CHECK CONSTRAINTS#######################################
 ###############################OVERALL NET
 
