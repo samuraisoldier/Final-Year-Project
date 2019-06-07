@@ -4,7 +4,6 @@ import cmath
 from ast import literal_eval
 from numpy.linalg import inv
 from scipy.sparse.linalg import spsolve
-#import sefn
 from sefn import admit_matrix, small_h, meas_jaco, errcov, front_substitution,back_substitution
 
  xnet_file = 'sample_net2.xlsx'

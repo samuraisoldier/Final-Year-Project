@@ -8,20 +8,20 @@ from pf_res_est_plotly import pf_res_est_plotly
 from pandapower.plotting.plotly import pf_res_plotly
 import pandas as pd
 
+#create empty network
 net = pp.create_empty_network()
-
+#create buses
 b1 = pp.create_bus(net, name="bus 1", vn_kv=1., index=1)
 b2 = pp.create_bus(net, name="bus 2", vn_kv=1., index=2)
 b3 = pp.create_bus(net, name="bus 3", vn_kv=1., index=3)
-
-pp.create_ext_grid(net, 3)  # set the slack bus to bus 1
-
+# set the slack bus to bus 1
+pp.create_ext_grid(net, 3)
+#create lines
 l1 = pp.create_line_from_parameters(net, 1, 2, 1, r_ohm_per_km=.01, x_ohm_per_km=.03, c_nf_per_km=0., max_i_ka=1)
 l2 = pp.create_line_from_parameters(net, 1, 3, 1, r_ohm_per_km=.02, x_ohm_per_km=.05, c_nf_per_km=0., max_i_ka=1)
 l3 = pp.create_line_from_parameters(net, 2, 3, 1, r_ohm_per_km=.03, x_ohm_per_km=.08, c_nf_per_km=0., max_i_ka=1)
 
-net
-
+#create measurements
 pp.create_measurement(net, "v", "bus", 1.006, .004, element=b1)        # V at bus 1
 pp.create_measurement(net, "v", "bus", 0.968, .004, element=b2)        # V at bus 2
 pp.create_measurement(net, "p", "bus", -0.501, .0010, element=b2)         # P at bus 2
@@ -30,17 +30,22 @@ pp.create_measurement(net, "p", "line", 0.888, .008, element=l1, side=b1)    # P
 pp.create_measurement(net, "p", "line", 1.173, .008, element=l2, side=b1)   # Pline (bus 1 -> bus 3) at bus 1
 pp.create_measurement(net, "q", "line", 0.568, .008, element=l1, side=b1)    # Qline (bus 1 -> bus 2) at bus 1
 pp.create_measurement(net, "q", "line", 0.663, .008, element=l2, side=b1)    # Qline (bus 1 -> bus 3) at bus 1
-net.measurement
 
-net.measurement.to_excel('meas.xlsx')
 success = estimate(net, init='flat')
 print(success)
+
+net.res_line_est
+
+net.res_bus_est
 
 
 pp.runpp(net, calculate_voltage_angles=True, init="dc")
 
+plt.figure(1)
+plot.simple_plot(net)
 
-plot.simple_plot(net, show_plot=True)
+plt.savefig('3busbar.png')c
+
 pf_res_est_plotly(net)
 pf_res_plotly(net)
 net
@@ -48,7 +53,7 @@ net.bus
 
 net.res_line_est
 net.res_bus
-net.res_bus_est.set_index(pd.Index([1,2,3]))
+net.res_bus_est
 
 net.line
 
