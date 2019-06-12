@@ -58,7 +58,7 @@ ind_feeder.measurement = pd.read_excel('final code/measurements/ind_feeder_m.xls
 res_feeder.measurement = pd.read_excel('final code/measurements/res_feeder_m.xlsx')
 
 #####COMMERCIAL MEASUREMENTS#########
-comm_feeder.measurement = pd.read_excel('final code/measurements/comm_feeder_m.xlsx')
+comm_feeder.measurement = pd.read_excel('final code/measurements/comm_feeder_m2.xlsx')
 
 #####MIXED MEASUREMENTS##############
 mixed_feeder.measurement = pd.read_excel('final code/measurements/mixed_feeder_m.xlsx')
@@ -203,8 +203,8 @@ succes = estimate(net, init='flat')
 print(succes)
 net.res_line_est
 net.res_bus_est
-net.res_line_est.to_excel('final code/result/line_ev.xlsx')
-net.res_bus_est.to_excel('final code/result/bus_ev.xlsx')
+# net.res_line_est.to_excel('final code/result/line_ev.xlsx')
+# net.res_bus_est.to_excel('final code/result/bus_ev.xlsx')
 
 ########################################################CHECK CONSTRAINTS#######################################
 #net.res_line_est.loading_percent>75
@@ -314,13 +314,13 @@ pp.create_measurement(netf, 'p', 'bus', 0.75, .001,  element = 24)
 # pp.create_measurement(netf, 'p', 'bus', -4.75, .001,  element = 23)
 
 #COMMERCIAL
-pp.create_measurement(netf, 'p', 'bus', 0.35, .001,  element = 33)
-# pp.create_measurement(netf, 'p', 'bus', 0.15, .001,  element = 35)
+pp.create_measurement(netf, 'p', 'bus', 0.2, .001,  element = 33)
+pp.create_measurement(netf, 'p', 'bus', 0.15, .001,  element = 35)
 
 
 #RESIDENTIAL
-# pp.create_measurement(netf, 'p', 'bus', 0.02, .001,  element = 12)
-pp.create_measurement(netf, 'p', 'bus', 0.25, .001,  element = 18)
+pp.create_measurement(netf, 'p', 'bus', 0.02, .001,  element = 12)
+pp.create_measurement(netf, 'p', 'bus', 0.03, .001,  element = 18)
 
 #MIXED
 # pp.create_measurement(netf, 'p', 'bus', 0.15, .001,  element = 63)
