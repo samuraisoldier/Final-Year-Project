@@ -15,7 +15,7 @@ b1 = pp.create_bus(net, name="bus 1", vn_kv=1., index=1)
 b2 = pp.create_bus(net, name="bus 2", vn_kv=1., index=2)
 b3 = pp.create_bus(net, name="bus 3", vn_kv=1., index=3)
 # set the slack bus to bus 1
-pp.create_ext_grid(net, 3)
+pp.create_ext_grid(net, 1)
 #create lines
 l1 = pp.create_line_from_parameters(net, 1, 2, 1, r_ohm_per_km=.01, x_ohm_per_km=.03, c_nf_per_km=0., max_i_ka=1)
 l2 = pp.create_line_from_parameters(net, 1, 3, 1, r_ohm_per_km=.02, x_ohm_per_km=.05, c_nf_per_km=0., max_i_ka=1)
@@ -30,6 +30,8 @@ pp.create_measurement(net, "p", "line", 0.888, .008, element=l1, side=b1)    # P
 pp.create_measurement(net, "p", "line", 1.173, .008, element=l2, side=b1)   # Pline (bus 1 -> bus 3) at bus 1
 pp.create_measurement(net, "q", "line", 0.568, .008, element=l1, side=b1)    # Qline (bus 1 -> bus 2) at bus 1
 pp.create_measurement(net, "q", "line", 0.663, .008, element=l2, side=b1)    # Qline (bus 1 -> bus 3) at bus 1
+net.measurement
+
 
 success = estimate(net, init='flat')
 print(success)

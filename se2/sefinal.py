@@ -33,7 +33,7 @@ hmats={}
 smallhs={}
 
 
-while tol > 0.0001:
+while tol > 0.01:
     iter = iter + 1
     print(iter)
 
