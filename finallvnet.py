@@ -92,11 +92,11 @@ print(successc)
 # comm_feeder.res_bus_est
 
 #####MIXED ESTIMATOR##############
-mixed_feeder.measurement = pd.read_excel('final code/measurements/mixed_feeder_m.xlsx')
+# mixed_feeder.measurement = pd.read_excel('final code/measurements/mixed_feeder_m.xlsx')
 successrc = estimate(mixed_feeder, init='flat')
 print(successrc)
-mixed_feeder.res_line_est
-mixed_feeder.res_bus_est
+# mixed_feeder.res_line_est
+# mixed_feeder.res_bus_est
 
 #################################################SET UP MEASUREMENTS FOR OVERALL FEEDER########################
 
@@ -166,7 +166,7 @@ while j < 1:
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 54)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 59)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 49)
-    pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 3)
+
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 60)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 61)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 62)
@@ -175,16 +175,24 @@ while j < 1:
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 55)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 56)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 58)
+
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 41)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 42)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 43)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 44)
-    pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 37)
+    pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 27)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 38)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 39)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 45)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 29)
     pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 34)
+    pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 37)
+    pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 31)
+    pp.create_measurement(net, 'q', 'bus', 0, .001,  element = 32)
+    k = 5
+    while k < 21:
+        pp.create_measurement(net, 'q', 'bus', 0, .001,  element = k)
+        k = k + 1
     j = j + 1
 
 
@@ -203,34 +211,125 @@ net.res_bus_est.to_excel('final code/result/bus_ev.xlsx')
 
 
 ########################################################ALLOCATE SOME FLEXIBILITY TO ALLEVIATE CONSTRAINTS#####
+netf = pp.from_excel("final code/circuits/net3.xlsx")
+j = 0
+while j < 1:
+    i = 0
+    while i < len(res_feeder.res_bus_est):
+        pp.create_measurement(netf, 'v', 'bus', res_feeder.res_bus_est.vm_pu[i] , 0.0004, element = i+3)
+        pp.create_measurement(netf, 'p', 'bus', -res_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+3)
+        pp.create_measurement(netf, 'q', 'bus', res_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+3)
+        i = i+ 1
 
+    ##INDUSTRIAL
+    i = 0
+    while i < len(ind_feeder.res_bus_est):
+        pp.create_measurement(netf, 'v', 'bus', ind_feeder.res_bus_est.vm_pu[i] , 0.0004, element = i+22)
+        pp.create_measurement(netf, 'p', 'bus', -ind_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+22)
+        pp.create_measurement(netf, 'q', 'bus', ind_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+22)
+        i = i+ 1
+
+    ##COMMERCIAL
+    i = 0
+    while i < len(comm_feeder.res_bus_est):
+        pp.create_measurement(netf, 'v', 'bus', comm_feeder.res_bus_est.vm_pu[i] , 0.0004, element = i+26)
+        pp.create_measurement(netf, 'p', 'bus', -comm_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+26)
+        pp.create_measurement(netf, 'q', 'bus', comm_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+26)
+        i = i+ 1
+
+    ##MIXED
+    i = 0
+    while i < len(mixed_feeder.res_bus_est):
+        pp.create_measurement(netf, 'v', 'bus', mixed_feeder.res_bus_est.vm_pu[i] , 0.0004, element = i+47)
+        pp.create_measurement(netf, 'p', 'bus', -mixed_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+47)
+        pp.create_measurement(netf, 'q', 'bus', mixed_feeder.res_bus_est.p_mw[i] , 0.0010, element = i+47)
+        i = i+ 1
+
+
+    pp.create_measurement(netf, 'v', 'bus', 1 , 0.0004, element = 0)
+
+    pp.create_measurement(netf, 'v', 'bus', np.random.normal(1, 0.0004), .0004,  element = 1)
+    #pp.create_measurement(net, 'v', 'bus', np.random.normal(1, 0.0004), .0004,  element = 2)
+    pp.create_measurement(netf, 'v', 'bus', np.random.normal(1, 0.0004), .0004,  element = 21)
+    #pp.create_measurement(net, 'v', 'bus', np.random.normal(1, 0.0004), .0004,  element = 25)
+    #pp.create_measurement(net, 'v', 'bus', np.random.normal(1, 0.0004), .0004,  element = 46)
+
+
+    #pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 26)
+    pp.create_measurement(netf, 'p', 'bus', 0, .001,  element = 3)
+    pp.create_measurement(netf, 'p', 'bus', 0, .001,  element = 22)
+    #pp.create_measurement(net, 'p', 'bus', -7.5, .001,  element = 23)
+    pp.create_measurement(netf, 'p', 'bus', 0, .001,  element = 1)
+    pp.create_measurement(netf, 'p', 'bus', 0, .001,  element = 47)
+    pp.create_measurement(netf, 'p', 'bus', 0, .001,  element = 26)
+
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 23)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 26)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 22)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 50)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 46)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 4)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 3)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 47)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 48)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 54)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 59)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 49)
+
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 60)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 61)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 62)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 51)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 53)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 55)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 56)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 58)
+
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 41)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 42)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 43)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 44)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 27)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 38)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 39)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 45)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 29)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 34)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 37)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 31)
+    pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = 32)
+    k = 5
+    while k < 21:
+        pp.create_measurement(netf, 'q', 'bus', 0, .001,  element = k)
+        k = k + 1
+    j = j + 1
+# netf.measurement = net.measurement
 #####WHAT ARE THE OPTIONS FOR EACH FEEDER########
 #DISPLAY OPTIONS AND CALCULATE CHEAPEST
 
+
 #CHOOSE AND ALLEVIATE
 #INDUSTRIAL
-pp.create_measurement(net, 'p', 'bus', 1, .001,  element = 24)
-#pp.create_measurement(net, 'p', 'bus', 5, .001,  element = 23)
+pp.create_measurement(netf, 'p', 'bus', 0.75, .001,  element = 24)
+# pp.create_measurement(netf, 'p', 'bus', -4.75, .001,  element = 23)
 
 #COMMERCIAL
-pp.create_measurement(net, 'p', 'bus', 0.5, .001,  element = 33)
-pp.create_measurement(net, 'p', 'bus', 0.5, .001,  element = 36)
-#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 45)
-#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 46)
+pp.create_measurement(netf, 'p', 'bus', 0.35, .001,  element = 33)
+# pp.create_measurement(netf, 'p', 'bus', 0.15, .001,  element = 35)
+
 
 #RESIDENTIAL
-pp.create_measurement(net, 'p', 'bus', 0.5, .001,  element = 12)
-#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 10)
-#pp.create_measurement(net, 'p', 'bus', 0, .001,  element = 19)
-pp.create_measurement(net, 'p', 'bus', 0.5, .001,  element = 18)
+# pp.create_measurement(netf, 'p', 'bus', 0.02, .001,  element = 12)
+pp.create_measurement(netf, 'p', 'bus', 0.25, .001,  element = 18)
 
 #MIXED
-pp.create_measurement(net, 'p', 'bus', 0.5, .001,  element = 63)
-pp.create_measurement(net, 'p', 'bus', 0.3, .001,  element = 52)
+# pp.create_measurement(netf, 'p', 'bus', 0.15, .001,  element = 63)
+# pp.create_measurement(netf, 'p', 'bus', 0.15, .001,  element = 52)
+pp.create_measurement(netf, 'p', 'bus', 0.45, .001,  element = 57)
 
 #RECALCULATE STATE TO CONFIRM
-successfinal = estimate(net, init='flat')
+successfinal = estimate(netf, init='flat')
 print(successfinal)
-net.res_line_est
-net.res_bus_est.to_excel('final code/result/bus_final.xlsx')
-net.res_line_est.to_excel('final code/result/line_final.xlsx')
+netf.res_line_est
+netf.res_bus_est.to_excel('final code/result/bus_final.xlsx')
+netf.res_line_est.to_excel('final code/result/line_final.xlsx')
