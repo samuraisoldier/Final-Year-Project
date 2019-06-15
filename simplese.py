@@ -1,12 +1,10 @@
 import pandapower as pp
 #import pandapower.networks as pn
-import numpy as np
-import pandapower.plotting as plot
-import matplotlib.pyplot as plt
 import pandas as pd
-from pandapower.plotting.plotly import simple_plotly
 from pandapower.estimation import estimate
 
+
+%%time
 net = pp.from_excel("final code/circuits/net3.xlsx")
 
 net.measurement = pd.read_excel('final code/measurements/net_m.xlsx')

@@ -8,6 +8,7 @@ from pandapower.plotting.plotly import simple_plotly
 from pandapower.estimation import estimate
 
 
+%%time
 #read overall net from excel file
 net = pp.from_excel("final code/circuits/net3.xlsx")
 #net
@@ -58,7 +59,7 @@ ind_feeder.measurement = pd.read_excel('final code/measurements/ind_feeder_m.xls
 res_feeder.measurement = pd.read_excel('final code/measurements/res_feeder_m.xlsx')
 
 #####COMMERCIAL MEASUREMENTS#########
-comm_feeder.measurement = pd.read_excel('final code/measurements/comm_feeder_m2.xlsx')
+comm_feeder.measurement = pd.read_excel('final code/measurements/comm_feeder_m.xlsx')
 
 #####MIXED MEASUREMENTS##############
 mixed_feeder.measurement = pd.read_excel('final code/measurements/mixed_feeder_m.xlsx')
@@ -196,7 +197,6 @@ while j < 1:
     j = j + 1
 
 
-
 ########################################################OVERALL ESTIMATOR########################################
 
 succes = estimate(net, init='flat')
@@ -314,8 +314,8 @@ pp.create_measurement(netf, 'p', 'bus', 0.75, .001,  element = 24)
 # pp.create_measurement(netf, 'p', 'bus', -4.75, .001,  element = 23)
 
 #COMMERCIAL
-pp.create_measurement(netf, 'p', 'bus', 0.2, .001,  element = 33)
-pp.create_measurement(netf, 'p', 'bus', 0.15, .001,  element = 35)
+pp.create_measurement(netf, 'p', 'bus', 0.35, .001,  element = 33)
+#pp.create_measurement(netf, 'p', 'bus', 0.15, .001,  element = 35)
 
 
 #RESIDENTIAL
